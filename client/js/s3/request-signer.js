@@ -164,8 +164,14 @@ qq.s3.RequestSigner = function(o) {
                                 promise.failure(e.target.error);
                             }
                             else {
-                                var wordArray = qq.CryptoJS.lib.WordArray.create(e.target.result);
-                                promise.success(qq.CryptoJS.SHA256(wordArray).toString());
+                                if (window.crypto) {
+                                    crypto.subtle.digest("SHA-256", e.target.result).then(function(digest) {
+                                        promise.success(qq.CryptoJS.lib.WordArray.create(digest).toString());
+                                    });
+                                } else {
+                                    var wordArray = qq.CryptoJS.lib.WordArray.create(e.target.result);
+                                    promise.success(qq.CryptoJS.SHA256(wordArray).toString());
+                                }
                             }
                         }
                     };
