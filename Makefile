@@ -1,8 +1,8 @@
 .PHONY: clean _build publish start-test-resources-server test-resources-server.PID start-root-server root-server.PID
 
 version=$(shell node -pe "require('./package.json').version")
-dist-out-dir = _dist
-pub-dir = $(dist-out-dir)/$(version)
+dist-out-dir = dist
+pub-dir = $(dist-out-dir)
 
 
 # properly get npm-bin in cygwin (Eg. CYGWIN_NT-10.0)
@@ -473,9 +473,7 @@ publish: \
 	copy-s3-jquery-dist \
 	copy-azure-dist \
 	copy-azure-jquery-dist \
-	copy-all-dist \
-	tag-release \
-	push-to-npm
+	copy-all-dist
 
 setup-dev:
 	(cd test/dev/handlers; curl -sS https://getcomposer.org/installer | php; php composer.phar install)
