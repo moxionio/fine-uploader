@@ -2243,7 +2243,9 @@
             _preventLeaveInProgress: function() {
                 var self = this;
                 this._disposeSupport.attach(window, "beforeunload", function(e) {
-                    if (self.getInProgress()) {
+                    var isDownloading = window.localStorage.getItem("isDownloading");
+                    window.localStorage.removeItem("isDownloading");
+                    if (self.getInProgress() && !isDownloading) {
                         e = e || window.event;
                         e.returnValue = self._options.messages.onLeave;
                         return self._options.messages.onLeave;
